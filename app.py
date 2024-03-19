@@ -34,6 +34,11 @@ def handle_message(event):
     )
     try:
         ret = response['choices'][0]['message']['content'].strip()
+        # 加入運動員個性的回應
+        ret = f"🏆 {ret} 🏅"  # 添加表情符號以表示運動員個性
+        # 添加運動專業術語
+        ret += "\n堅持突破極限，永不放棄！ 💪"
+        ret += "\n記住，這不是關於勝利或失敗，而是關於在場上盡力而為。 🌟"
     except:
         ret = '發生錯誤！'
     line_bot_api.reply_message(event.reply_token,TextSendMessage(text=ret))
