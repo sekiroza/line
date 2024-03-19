@@ -34,7 +34,7 @@ def handle_message(event):
     text1 = event.message.text
     
     # 在對話文本中間接地表達特定的個性
-    text_with_personality = f"I'm a sports enthusiast who loves chatting about athletics and motivating others!\n{text1}"
+    text_with_personality = f"我是一個熱愛運動的人，喜歡聊天和激勵他人！\n{text1}"
     
     response = openai.ChatCompletion.create(
         messages=[
