@@ -13,32 +13,32 @@ line_bot_api = LineBotApi(os.getenv('CHANNEL_ACCESS_TOKEN'))
 handler1 = WebhookHandler(os.getenv('CHANNEL_SECRET'))
 
 # 設定訊息計數器
-message_counter = 0
+openai_message_counter = 0
 
 @app.route('/callback', methods=['POST'])
 def callback():
-    global message_counter
+    global openai_message_counter
     signature = request.headers['X-Line-Signature']
     body = request.get_data(as_text=True)
     try:
         handler1.handle(body, signature)
-        # 每當接收到一條訊息，計數器就加1
-        message_counter += 1
+        # 每當接收到 OpenAI 的回應，計數器就加1
+        openai_message_counter += 1
     except InvalidSignatureError:
         abort(400)
     return 'OK'
 
+@app.route('/counter', methods=['GET'])
+def get_counter():
+    return f'OpenAI 共傳送了 {openai_message_counter} 則訊息'
+
 @handler1.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    global message_counter
     text1 = event.message.text
-    
-    # 在對話文本中間接地表達特定的個性
-    text_with_personality = f"我是一個熱愛運動的人，喜歡聊天和激勵他人！\n{text1}"
     
     response = openai.ChatCompletion.create(
         messages=[
-            {"role": "user", "content": text_with_personality}
+            {"role": "user", "content": text1}
         ],
         model="gpt-3.5-turbo-0125",
         temperature=0.5,
