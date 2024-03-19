@@ -2,7 +2,7 @@ from flask import Flask
 app = Flask(__name__)
 
 from flask import request, abort
-from linebot import  LineBotApi, WebhookHandler
+from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import MessageEvent, TextMessage, TextSendMessage
 import openai
@@ -52,6 +52,8 @@ def handle_message(event):
         ret += "\n記住，這不是關於勝利或失敗，而是關於在場上盡力而為。 🌟"
     except:
         ret = '發生錯誤！'
+    
+    # 回覆訊息
     line_bot_api.reply_message(event.reply_token, TextSendMessage(text=ret))
 
 if __name__ == '__main__':
